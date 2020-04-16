@@ -18,6 +18,18 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
   },
+  {
+    path: '/register',
+    name: 'Register',
+    // eslint-disable-next-line no-undef
+    component: () => import('../views/register/Register.vue'),
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    // eslint-disable-next-line no-undef
+    component: () => import('../views/login/Login.vue'),
+  },
 ];
 
 const router = new VueRouter({
