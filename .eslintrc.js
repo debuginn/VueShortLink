@@ -13,6 +13,8 @@ module.exports = {
   
   rules: {
     'indent' : ['error', 2],
+    'max-len' : ["error", {code : 300}],
+    'arrow-body-style' : ['off'],
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
   },
