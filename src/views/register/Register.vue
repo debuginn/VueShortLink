@@ -46,8 +46,7 @@
 // 引入 vuelidate 插件
 import { required, minLength } from 'vuelidate/lib/validators';
 import customValidator from '@/helper/validator';
-import userService from '@/service/userService';
-import { mapMutations } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
   data() {
@@ -73,7 +72,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations('userModule', ['SET_TOKEN', 'SET_USERINFO']),
+    ...mapActions('userModule', { userRegister: 'register' }),
     validateState(name) {
       const { $dirty, $error } = this.$v.user[name];
       return $dirty ? !$error : null;
@@ -85,14 +84,7 @@ export default {
         return;
       }
       // 请求
-      userService.register(this.user).then((res) => {
-        // 保存 token
-        this.SET_TOKEN(res.data.data.token);
-        userService.userInfo();
-        return userService.userInfo;
-      }).then((response) => {
-        // 保存用户信息
-        this.SET_USERINFO(response.data.data.user);
+      this.userRegister(this.user).then(() => {
         // 跳转主页
         this.$router.replace({ name: 'Home' });
       }).catch((err) => {
@@ -105,7 +97,6 @@ export default {
         }
       });
     },
-
   },
 };
 </script>
