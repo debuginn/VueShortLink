@@ -12,7 +12,7 @@
                 <strong>{{ userInfo.name }}</strong>
               </template>
               <b-dropdown-item href="#">个人中心</b-dropdown-item>
-              <b-dropdown-item href="#">登出</b-dropdown-item>
+              <b-dropdown-item @click="logout">登出</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
           <b-navbar-nav v-if="!userInfo">
@@ -29,17 +29,12 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
-  // computed: {
-  //   userInfo() {
-  //     // return JSON.parse(storageService.get(storageService.USER_INFO));
-  //     return this.$store.state.userModule.userInfo;
-  //   },
-  // },
   computed: mapState({
     userInfo: (state) => state.userModule.userInfo,
   }),
+  methods: mapActions('userModule', ['logout']),
 };
 </script>

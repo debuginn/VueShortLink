@@ -38,6 +38,7 @@
 // 引入 vuelidate 插件
 import { required, minLength } from 'vuelidate/lib/validators';
 import customValidator from '@/helper/validator';
+import { mapActions } from 'vuex';
 
 export default {
   data() {
@@ -60,12 +61,31 @@ export default {
     },
   },
   methods: {
+    ...mapActions('userModule', { userLogin: 'login' }),
     validateState(name) {
+      // ES6 赋值结构
       const { $dirty, $error } = this.$v.user[name];
       return $dirty ? !$error : null;
     },
     login() {
-      console.log(this.user);
+      // 验证数据
+      this.$v.$touch();
+      if (this.$v.user.$anyError) {
+        return;
+      }
+      // 请求
+      this.userLogin(this.user).then(() => {
+        // 跳转主页
+        this.$router.replace({ name: 'Home' });
+      }).catch((err) => {
+        if (typeof (err.response) !== 'undefined') {
+          this.$bvToast.toast(err.response.data.msg, {
+            title: '数据验证错误',
+            variant: 'danger',
+            solid: true,
+          });
+        }
+      });
     },
   },
 };
